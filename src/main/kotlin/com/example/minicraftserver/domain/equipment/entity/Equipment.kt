@@ -1,6 +1,6 @@
 package com.example.minicraftserver.domain.equipment.entity
 
-import com.example.minicraftserver.domain.equipment.entity.enums.EquipmentType
+import com.example.minicraftserver.global.enums.ItemType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -14,7 +14,8 @@ class Equipment(
 
     @Id
     @Enumerated(EnumType.STRING)
-    val type: EquipmentType,
+    @Column(columnDefinition = "")
+    val itemType: ItemType,
 
     @Column(columnDefinition = "INT DEFAULT 0")
     val health: Int,
