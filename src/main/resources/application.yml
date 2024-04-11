@@ -10,9 +10,18 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+    database: mysql
 
   jackson:
     property-naming-strategy: SNAKE_CASE
 
   lifecycle:
     timeout-per-shutdown-phase: 20s
+
+jwt:
+  header: ${JWT_HEADER}
+  prefix: ${JWT_PREFIX}
+  secret_key: ${SECRET_KEY}
+  access_exp: ${ACCESS_EXP}
+  refresh_exp: ${REFRESH_EXP}
+  
