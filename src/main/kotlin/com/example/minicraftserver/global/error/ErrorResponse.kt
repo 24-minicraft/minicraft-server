@@ -6,6 +6,7 @@ class ErrorResponse(
     val status: Int,
     val message: String,
 ) {
+
     companion object {
         fun of(e: MinicraftException): ErrorResponse {
             return ErrorResponse(

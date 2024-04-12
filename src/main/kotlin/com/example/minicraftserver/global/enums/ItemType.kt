@@ -1,7 +1,6 @@
 package com.example.minicraftserver.global.enums
 
 enum class ItemType {
-
     // 아이템
     LOG,
     STRAW,

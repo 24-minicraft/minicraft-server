@@ -1,8 +1,8 @@
-package com.example.minicraftserver.domain.character.entity
+package com.example.minicraftserver.domain.character.domain
 
-import com.example.minicraftserver.domain.equipment.entity.Equipment
-import com.example.minicraftserver.domain.user.entity.User
-import com.example.minicraftserver.domain.work.entity.Work
+import com.example.minicraftserver.domain.equipment.domain.Equipment
+import com.example.minicraftserver.domain.user.domain.User
+import com.example.minicraftserver.domain.work.domain.Work
 import com.example.minicraftserver.global.entity.BaseIdEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -16,7 +16,6 @@ import jakarta.validation.constraints.NotNull
 @Table(name = "tbl_character")
 @Entity
 class Character (
-
     id: Long,
 
     @NotNull

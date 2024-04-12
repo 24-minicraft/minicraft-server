@@ -10,7 +10,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseIdEntity (
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,

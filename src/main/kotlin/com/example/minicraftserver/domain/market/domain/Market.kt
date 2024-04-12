@@ -1,4 +1,4 @@
-package com.example.minicraftserver.domain.market.entity
+package com.example.minicraftserver.domain.market.domain
 
 import com.example.minicraftserver.global.entity.BaseIdEntity
 import com.example.minicraftserver.global.enums.ItemType
@@ -12,7 +12,6 @@ import jakarta.validation.constraints.NotNull
 @Table(name = "tbl_market")
 @Entity
 class Market (
-
     id: Long,
 
     @NotNull

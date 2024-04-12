@@ -1,6 +1,6 @@
-package com.example.minicraftserver.domain.item.entity
+package com.example.minicraftserver.domain.item.domain
 
-import com.example.minicraftserver.domain.character.entity.Character
+import com.example.minicraftserver.domain.character.domain.Character
 import com.example.minicraftserver.global.entity.BaseIdEntity
 import com.example.minicraftserver.global.enums.ItemType
 import jakarta.persistence.Column
@@ -16,7 +16,6 @@ import jakarta.validation.constraints.NotNull
 @Table(name = "tbl_item")
 @Entity
 class Item(
-
     id: Long,
 
     @NotNull

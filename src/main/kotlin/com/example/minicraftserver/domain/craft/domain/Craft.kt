@@ -1,5 +1,6 @@
-package com.example.minicraftserver.domain.craft.entity
+package com.example.minicraftserver.domain.craft.domain
 
+import com.example.minicraftserver.global.entity.BaseIdEntity
 import com.example.minicraftserver.global.enums.ItemType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -11,7 +12,6 @@ import jakarta.validation.constraints.NotNull
 @Table(name = "tbl_craft")
 @Entity
 class Craft (
-
     id: Long,
 
     @NotNull
@@ -22,4 +22,4 @@ class Craft (
     @NotNull
     @Column(columnDefinition = "VARCHAR(256)")
     val amount: Int,
-)
+) : BaseIdEntity(id)

@@ -1,6 +1,7 @@
 package com.example.minicraftserver.global.error
 
 import com.example.minicraftserver.global.error.exception.MinicraftException
+import com.example.minicraftserver.global.exception.InternalServerErrorException
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -9,18 +10,17 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
-import kotlin.jvm.Throws
 
 @Component
 class ExceptionFilter(
-    private val objectMapper: ObjectMapper,
+    private val objectMapper: ObjectMapper
 ) : OncePerRequestFilter() {
 
     @Throws(IOException::class)
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain,
+        filterChain: FilterChain
     ) {
         try {
             filterChain.doFilter(request, response)
@@ -28,7 +28,7 @@ class ExceptionFilter(
             exception.printStackTrace()
             when (exception) {
                 is MinicraftException -> writeErrorCode(exception, response)
-                else -> writeErrorCode(InternalServerError.EXCEPTION, response)
+                else -> writeErrorCode(InternalServerErrorException.EXCEPTION, response)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.minicraftserver.domain.equipment.entity
+package com.example.minicraftserver.domain.equipment.domain
 
 import com.example.minicraftserver.global.enums.ItemType
 import jakarta.persistence.Column
@@ -11,7 +11,6 @@ import jakarta.persistence.Table
 @Table(name = "tbl_equipment")
 @Entity
 class Equipment(
-
     @Id
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "")
