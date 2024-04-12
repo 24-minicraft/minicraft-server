@@ -13,7 +13,7 @@ import java.io.IOException
 
 @Component
 class ExceptionFilter(
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) : OncePerRequestFilter() {
 
     @Throws(IOException::class)
