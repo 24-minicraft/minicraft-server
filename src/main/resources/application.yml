@@ -19,9 +19,8 @@ spring:
     timeout-per-shutdown-phase: 20s
 
 jwt:
-  header: ${JWT_HEADER}
-  prefix: ${JWT_PREFIX}
+  header: ${JWT_HEADER:Authorization}
+  prefix: ${JWT_PREFIX:Bearer}
   secret_key: ${SECRET_KEY}
-  access_exp: ${ACCESS_EXP}
-  refresh_exp: ${REFRESH_EXP}
-  
+  access_exp: ${ACCESS_EXP:1800}
+  refresh_exp: ${REFRESH_EXP:86400}
