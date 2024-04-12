@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.2.4"
-    id("io.spring.dependency-management") version "1.1.4"
-    kotlin("jvm") version "1.9.23"
-    kotlin("plugin.spring") version "1.9.23"
-    kotlin("plugin.jpa") version "1.9.23"
+    id("org.springframework.boot") version PluginVersions.SPRING_BOOT_VERSION
+    id("io.spring.dependency-management") version PluginVersions.DEPENDENCY_MANAGER_VERSION
+    kotlin("jvm") version PluginVersions.JVM_VERSION
+    kotlin("plugin.spring") version PluginVersions.SPRING_PLUGIN_VERSION
+    kotlin("plugin.jpa") version PluginVersions.JPA_PLUGIN_VERSION
 }
 
 group = "com.example"
@@ -26,26 +26,47 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    testImplementation("org.springframework.security:spring-security-test")
-    compileOnly("org.projectlombok:lombok")
-    runtimeOnly("com.mysql:mysql-connector-j")
-    annotationProcessor("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation(Dependencies.JPA)
+    implementation(Dependencies.VALIDATION)
+    implementation(Dependencies.WEB)
+    implementation(Dependencies.JACKSON)
+    implementation(Dependencies.REFLECT)
+    implementation(Dependencies.SECURITY)
+    testImplementation(Dependencies.SECURITY_TEST)
+    runtimeOnly(Dependencies.MYSQL)
+    testImplementation(Dependencies.TEST)
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
+        freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "17"
     }
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+allOpen {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.MappedSuperclass")
+    annotation("javax.persistence.Embeddable")
+}
+
+noArg {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.MappedSuperclass")
+    annotation("javax.persistence.Embeddable")
+}
+
+tasks.getByName<Jar>("jar") {
+    enabled = false
+}
+
+configurations {
+    create("myConfiguration") {
+        isCanBeResolved = true
+        isCanBeConsumed = false
+    }
 }
