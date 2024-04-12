@@ -1,6 +1,6 @@
 package com.example.minicraftserver.global.error.exception
 
-class MinicraftException(
+abstract class MinicraftException(
     val errorCode: ErrorCode,
 ) : RuntimeException() {
 
