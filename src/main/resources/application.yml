@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${USERNAME}
+    password: ${PASSWORD}
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    database: mysql
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+jwt:
+  header: ${JWT_HEADER:Authorization}
+  prefix: ${JWT_PREFIX:Bearer}
+  secret_key: ${SECRET_KEY}
+  access_exp: ${ACCESS_EXP:1800}
+  refresh_exp: ${REFRESH_EXP:86400}
