@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull
 @Table(name = "tbl_user")
 @Entity
 class User (
-    id: Long,
+    id: Long = 0,
 
     @NotNull
     @Column(columnDefinition = "VARCHAR(15)", unique = true)
