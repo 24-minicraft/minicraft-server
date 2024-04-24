@@ -20,10 +20,10 @@ class Market (
     val market: ItemType,
 
     @NotNull
-    @Column(columnDefinition = "INT(256)")
+    @Column(columnDefinition = "INT(255)")
     val buyCost: Int,
 
     @NotNull
-    @Column(columnDefinition = "INT(256)")
+    @Column(columnDefinition = "INT(255)")
     val sellCost: Int,
 ) : BaseIdEntity(id)
