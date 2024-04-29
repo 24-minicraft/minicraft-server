@@ -72,8 +72,8 @@ enum class RegionType {
         while (timeLeft >= lowestTime) {
             if (timeLeft <= highestTime) itemSet.removeIf { it.gather!! > timeLeft }
             itemType = itemSet.random()
-            resultMap.merge(itemType, 1, Integer::sum)
-            timeLeft -= itemType.gather!! * 4 * (1 + lucky / 100 + if (Random.nextDouble() * 100 < lucky % 100) 1 else 0)
+            resultMap.merge(itemType, 1 * (1 + lucky / 100 + if (Random.nextDouble() * 100 < lucky % 100) 1 else 0), Integer::sum)
+            timeLeft -= itemType.gather!! * 4
         }
         return GatherResult(resultMap.map { ItemStack(it.key, it.value) })
     }
