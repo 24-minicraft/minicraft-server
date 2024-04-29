@@ -1,6 +1,9 @@
 package com.example.minicraftserver.domain.work.domain.enums
 
 import com.example.minicraftserver.global.enums.ItemType
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.random.Random
 
 enum class RegionType {
@@ -29,30 +32,30 @@ enum class RegionType {
      * @property health 현재 캐릭터의 체력
      * @property lucky 현재 캐릭터의 행운
      */
-    fun getBattle(time: Int, health: Int, lucky: Int): BattleResult {
-        val multiply = time / 60
-        var count: Int
+    fun getBattleResult(time: Int, health: Int, lucky: Int): BattleResult {
+        fun next() = Random.nextInt(30, 121)
+        var timeLeft = time
+        var nextTime = next()
         var hp = health
-        return BattleResult(
-            getBattleItems().mapNotNull { itemType ->
-                itemType.battle?.let {
-                    if (hp <= 0) return@mapNotNull null
-                    count = 0
-                    for (i in 1..multiply) {
-                        if (Random.nextDouble() < it.chance) {
-                            count += Random.nextInt(
-                                it.drops.first,
-                                it.drops.last + 1
-                            ) * (1 + lucky / 100 + if (Random.nextDouble() * 100 < lucky % 100) 1 else 0)
-                            hp -= it.damage
-                            if (hp <= 0) break
-                        }
-                    }
-                    itemType to count
-                }
-            },
-            hp
-        )
+
+        val map: EnumMap<ItemType, Int> = EnumMap<ItemType, Int>(ItemType::class.java)
+        while (timeLeft >= nextTime) {
+            val itemType = getBattleItems().random()
+            itemType.battle?.let {
+                if (it.chance >= Random.nextDouble()) return@let
+                val amount = Random.nextInt(
+                    it.drops.first,
+                    it.drops.last + 1
+                ) * (1 + lucky / 100 + if (Random.nextDouble() * 100 < lucky % 100) 1 else 0)
+                map.merge(itemType, amount, Integer::sum)
+                hp -= it.damage
+            }
+            if (hp <= 0) break
+            timeLeft -= nextTime
+            nextTime = next()
+        }
+
+        return BattleResult(map.map { (key, value) -> ItemStack(key, value) }, hp)
     }
 
     /**
@@ -60,11 +63,11 @@ enum class RegionType {
      * @property time 총 시간(초)
      * @property lucky 현재 캐릭터의 행운
      */
-    fun getGather(time: Int, lucky: Int): GatherResult {
+    fun getGatherResult(time: Int, lucky: Int): GatherResult {
         var timeLeft = time
         val resultMap = hashMapOf<ItemType, Int>()
-        val highestTime = getGatherItems().maxOf { (it.gather ?: -99999) * 4 }
-        val lowestTime = getGatherItems().minOf { (it.gather ?: 99999) * 4 }
+        val highestTime = getGatherItems().maxOf { it.gather!! * 4 }
+        val lowestTime = getGatherItems().minOf { it.gather!! * 4 }
         val itemSet = getGatherItems().toHashSet()
         var itemType: ItemType
 
@@ -72,21 +75,26 @@ enum class RegionType {
             itemType = itemSet.random()
             resultMap.merge(itemType, 1, Integer::sum)
             timeLeft -= itemType.gather!! * 4 * (1 + lucky / 100 + if (Random.nextDouble() * 100 < lucky % 100) 1 else 0)
-            if (timeLeft > highestTime) {
+            if (timeLeft <= highestTime) {
                 itemSet.removeIf { it.gather!! > timeLeft }
             }
         }
         return GatherResult(
-            resultMap.map { it.key to it.value }
+            resultMap.map { ItemStack(it.key, it.value) }
         )
     }
 
     data class BattleResult(
-        val items: List<Pair<ItemType, Int>>,
+        val items: List<ItemStack>,
         val remainHealth: Int
     )
 
     data class GatherResult(
-        val items: List<Pair<ItemType, Int>>
+        val items: List<ItemStack>
+    )
+
+    data class ItemStack(
+        val type: ItemType,
+        val amount: Int
     )
 }
