@@ -2,8 +2,6 @@ package com.example.minicraftserver.domain.work.domain.enums
 
 import com.example.minicraftserver.global.enums.ItemType
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.random.Random
 
 enum class RegionType {
@@ -72,16 +70,12 @@ enum class RegionType {
         var itemType: ItemType
 
         while (timeLeft >= lowestTime) {
+            if (timeLeft <= highestTime) itemSet.removeIf { it.gather!! > timeLeft }
             itemType = itemSet.random()
             resultMap.merge(itemType, 1, Integer::sum)
             timeLeft -= itemType.gather!! * 4 * (1 + lucky / 100 + if (Random.nextDouble() * 100 < lucky % 100) 1 else 0)
-            if (timeLeft <= highestTime) {
-                itemSet.removeIf { it.gather!! > timeLeft }
-            }
         }
-        return GatherResult(
-            resultMap.map { ItemStack(it.key, it.value) }
-        )
+        return GatherResult(resultMap.map { ItemStack(it.key, it.value) })
     }
 
     data class BattleResult(
