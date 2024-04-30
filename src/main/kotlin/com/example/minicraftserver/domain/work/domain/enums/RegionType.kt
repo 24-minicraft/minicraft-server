@@ -22,7 +22,7 @@ enum class RegionType {
 
     fun getGatherItems(): List<ItemType> = gather[ordinal]
 
-    fun getBattleItems(): List<ItemType> = gather[ordinal]
+    fun getBattleItems(): List<ItemType> = battle[ordinal]
 
     /**
      * 해당 지역에서의 전투 결과 얻기
