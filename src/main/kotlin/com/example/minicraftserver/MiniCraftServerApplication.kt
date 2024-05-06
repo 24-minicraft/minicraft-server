@@ -7,8 +7,8 @@ import org.springframework.boot.runApplication
 
 @EnableConfigurationProperties(JwtProperties::class)
 @SpringBootApplication
-class MinicraftServerApplication
+class MiniCraftServerApplication
 
 fun main(args: Array<String>) {
-    runApplication<MinicraftServerApplication>(*args)
+    runApplication<MiniCraftServerApplication>(*args)
 }
