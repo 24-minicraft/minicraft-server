@@ -5,5 +5,7 @@ enum class ErrorCode (
     val message: String,
 ) {
 
+    USER_ALREADY_EXIST(409, "User Already Exist"),
+
     INTERNAL_SERVER_ERROR(500, "Internal Server Error.");
 }
