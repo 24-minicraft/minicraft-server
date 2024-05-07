@@ -1,5 +1,6 @@
 package com.example.minicraftserver.domain.work.domain.enums
 
+import com.example.minicraftserver.domain.work.domain.data.ItemStack
 import com.example.minicraftserver.global.enums.ItemType
 import java.util.*
 import kotlin.random.Random
@@ -87,8 +88,4 @@ enum class RegionType {
         val items: List<ItemStack>
     )
 
-    data class ItemStack(
-        val type: ItemType,
-        val amount: Int
-    )
 }
