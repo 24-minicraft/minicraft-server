@@ -28,7 +28,7 @@ class ExceptionFilter(
             exception.printStackTrace()
             when (exception) {
                 is MinicraftException -> writeErrorCode(exception, response)
-                else -> writeErrorCode(InternalServerErrorException.EXCEPTION, response)
+                else -> writeErrorCode(InternalServerErrorException, response)
             }
         }
     }
