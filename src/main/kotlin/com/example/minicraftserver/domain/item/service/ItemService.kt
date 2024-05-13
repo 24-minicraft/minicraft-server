@@ -9,7 +9,6 @@ import com.example.minicraftserver.global.enums.ItemCategory
 import com.example.minicraftserver.global.enums.ItemType
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import java.util.Timer
 import kotlin.jvm.optionals.getOrNull
 
 @Service
@@ -24,8 +23,11 @@ class ItemService(
      */
     @Transactional
     fun add(user: User, itemType: ItemType, amount: Int = 1) {
-        val item = getData(user, itemType, true)
-        item.amount += amount
+        val item = itemRepository.findByUserAndItemType(user, itemType).getOrNull() ?: kotlin.run {
+            itemRepository.save(Item(0, itemType, amount, user))
+            return
+        }
+        item.amount += amount // 단순히 아이템 추가
     }
 
     /**
@@ -48,7 +50,7 @@ class ItemService(
     @Transactional
     fun remove(user: User, itemType: ItemType, amount: Int = 1): Boolean {
         val item = getData(user, itemType, true)
-        if (item.amount < amount) return false
+        if (item.amount < amount) return false // 충분히 소지하고 있지 않다면 반영 안됨
         item.amount -= amount
         return true
     }
@@ -62,7 +64,12 @@ class ItemService(
      */
     @Transactional
     fun remove(user: User, itemStack: ItemStack): Boolean {
-        return remove(user, itemStack.type, itemStack.amount)
+        return remove(user, itemStack.type, itemStack.amount) // 참조
+    }
+
+    @Transactional
+    fun removeAll(user: User, items: Collection<ItemStack>) {
+        items.forEach { remove(user, it) }
     }
 
     /**
@@ -74,7 +81,7 @@ class ItemService(
      */
     fun has(user: User, itemType: ItemType, amount: Int = 1): Boolean {
         val item = getData(user, itemType)
-        return item.amount >= amount
+        return item.amount >= amount // 단순히 아이템 소지 여부
     }
 
 
@@ -141,6 +148,13 @@ class ItemService(
         )
     }
 
+    /**
+     * 아이템 소지 정보를 조회
+     * @property user 대상 유저
+     * @property itemType 조회할 아이템 타입
+     * @property save 조회 실패시 새롭게 DB에 추가할 것인지의 여부
+     * @return [Item]으로 반환, 아이템을 한 번도 소지하지 않았다면 0개 소지로 반환
+     */
     private fun getData(user: User, itemType: ItemType, save: Boolean = false): Item {
         return itemRepository.findByUserAndItemType(user, itemType).getOrNull() ?: if (save) itemRepository.save(Item(0, itemType, 0, user))
         else Item(0, itemType, 0, user)
