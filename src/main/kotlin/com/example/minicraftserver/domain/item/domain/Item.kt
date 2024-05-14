@@ -1,6 +1,6 @@
 package com.example.minicraftserver.domain.item.domain
 
-import com.example.minicraftserver.domain.character.domain.Character
+import com.example.minicraftserver.domain.user.domain.User
 import com.example.minicraftserver.global.entity.BaseIdEntity
 import com.example.minicraftserver.global.enums.ItemType
 import jakarta.persistence.Column
@@ -29,6 +29,6 @@ class Item(
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "character_id")
-    val character: Character,
+    @JoinColumn(name = "user_id")
+    val user: User,
 ) : BaseIdEntity(id)
