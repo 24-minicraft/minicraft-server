@@ -16,7 +16,7 @@ class CraftService(
     private val itemService: ItemService
 ) {
     /**
-     * 모든 래시피 조회
+     * 모든 레시피 조회
      */
     fun getCrafts(): RecipeResponse {
         return RecipeResponse(
