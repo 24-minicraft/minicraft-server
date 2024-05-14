@@ -19,5 +19,9 @@ enum class ErrorCode(
 
     NOT_ENOUGH_REQUIREMENTS(400, "Not enough craft requirements"),
 
+    ITEM_NOT_GATHER(400, "Item is not gatherable"),
+
+    GATHERING_TOO_FAST(403, "Gathering Too Fast"),
+
     ;
 }
