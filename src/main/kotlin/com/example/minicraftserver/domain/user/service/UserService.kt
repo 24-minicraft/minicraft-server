@@ -7,6 +7,7 @@ import com.example.minicraftserver.domain.user.exception.PasswordMisMatchedExcep
 import com.example.minicraftserver.domain.user.facade.UserFacade
 import com.example.minicraftserver.domain.user.presentation.dto.request.UserLonginRequest
 import com.example.minicraftserver.domain.user.presentation.dto.request.UserSignUpRequest
+import com.example.minicraftserver.domain.user.presentation.dto.response.QueryUserSeedsResponse
 import com.example.minicraftserver.domain.user.presentation.dto.response.TokenResponse
 import com.example.minicraftserver.global.security.jwt.JwtProperties
 import com.example.minicraftserver.global.security.jwt.JwtTokenProvider
@@ -23,7 +24,7 @@ class UserService(
     private val jwtProperties: JwtProperties,
 ) {
 
-    @Transactional(readOnly = true)
+    @Transactional
     fun signUp(request: UserSignUpRequest) {
         if (userRepository.existsByAccountId(request.accountId)) {
             throw UserAlreadyExist
@@ -46,5 +47,11 @@ class UserService(
             throw PasswordMisMatchedException
 
         return jwtTokenProvider.getToken(user.accountId)
+    }
+
+    fun querySeeds(): QueryUserSeedsResponse {
+        val user = userFacade.getCurrentUser()
+
+        return QueryUserSeedsResponse(user.seeds)
     }
 }
