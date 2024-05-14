@@ -11,7 +11,6 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 
@@ -28,8 +27,7 @@ class Equipment(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val user: User,
-
-    @NotNull
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "character_id")
     val character: Character,
