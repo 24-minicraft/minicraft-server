@@ -31,8 +31,9 @@ class UserController(
         userService.login(request)
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/seeds")
-    fun queryUserSeeds(): QueryUserSeedsResponse =
-        userService.querySeeds()
-
+    fun queryUserSeeds(): QueryUserSeedsResponse {
+        return userService.querySeeds()
+    }
 }
