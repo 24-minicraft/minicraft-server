@@ -1,6 +1,5 @@
 package com.example.minicraftserver.domain.character.domain
 
-import com.example.minicraftserver.domain.equipment.domain.Equipment
 import com.example.minicraftserver.domain.user.domain.User
 import com.example.minicraftserver.domain.work.domain.Work
 import com.example.minicraftserver.global.entity.BaseIdEntity
@@ -25,10 +24,6 @@ class Character (
     @NotNull
     @Column(columnDefinition = "INT DEFAULT 100")
     val health: Int,
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "equipment_id")
-    val equipment: Equipment,
 
     @NotNull
     @OneToOne(fetch = FetchType.LAZY)
