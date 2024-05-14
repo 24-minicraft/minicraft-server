@@ -1,5 +1,6 @@
 package com.example.minicraftserver.domain.user.presentation
 
+import com.example.minicraftserver.domain.user.presentation.dto.request.UserLonginRequest
 import com.example.minicraftserver.domain.user.presentation.dto.request.UserSignUpRequest
 import com.example.minicraftserver.domain.user.service.UserService
 import jakarta.validation.Valid
@@ -17,8 +18,15 @@ class UserController(
 ) {
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping("/signup")
     fun userSignUp(@Valid @RequestBody request: UserSignUpRequest) {
         userService.signUp(request)
     }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/login")
+    fun userLogin(@Valid @RequestBody request: UserLonginRequest) {
+        userService.login(request)
+    }
+
 }

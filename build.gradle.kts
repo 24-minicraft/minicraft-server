@@ -35,6 +35,9 @@ dependencies {
     testImplementation(Dependencies.SECURITY_TEST)
     runtimeOnly(Dependencies.MYSQL)
     testImplementation(Dependencies.TEST)
+    implementation(Dependencies.REDIS)
+    annotationProcessor(Dependencies.CONFIGURATION_PROCESSOR)
+    implementation(Dependencies.JWT)
 }
 
 tasks.withType<KotlinCompile> {
