@@ -12,6 +12,11 @@ spring:
     open-in-view: false
     database: mysql
 
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+
   jackson:
     property-naming-strategy: SNAKE_CASE
 
