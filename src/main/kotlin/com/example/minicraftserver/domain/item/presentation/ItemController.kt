@@ -4,7 +4,11 @@ import com.example.minicraftserver.domain.item.presentation.dto.response.Invento
 import com.example.minicraftserver.domain.item.service.ItemService
 import com.example.minicraftserver.global.enums.ItemType
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RequestMapping("/item")
 @RestController

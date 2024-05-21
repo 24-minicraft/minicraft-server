@@ -2,7 +2,7 @@ package com.example.minicraftserver.domain.work.domain.enums
 
 import com.example.minicraftserver.domain.work.domain.data.ItemStack
 import com.example.minicraftserver.global.enums.ItemType
-import java.util.*
+import java.util.EnumMap
 import kotlin.random.Random
 
 enum class RegionType {
