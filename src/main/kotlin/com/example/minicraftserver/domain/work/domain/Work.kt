@@ -12,17 +12,17 @@ import java.time.LocalDateTime
 
 @Table(name = "tbl_work")
 @Entity
-class Work (
+class Work(
     id: Long,
 
     @NotNull
-    @Column(columnDefinition = "VARCHAR(10) DEFAULT COLLECTION")
+    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'COLLECTION'")
     val workType: WorkType,
 
     @Column(columnDefinition = "VARCHAR(7)")
     val regionType: RegionType,
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     val startTime: LocalDateTime,
 
     @Column(columnDefinition = "INT DEFAULT 0")
