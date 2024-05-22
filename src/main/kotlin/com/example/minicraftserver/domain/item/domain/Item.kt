@@ -20,12 +20,12 @@ class Item(
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(11)")
+    @Column(columnDefinition = "VARCHAR(15)")
     val itemType: ItemType,
 
     @NotNull
     @Column(columnDefinition = "INT DEFAULT 0")
-    val amount: Int,
+    var amount: Int,
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

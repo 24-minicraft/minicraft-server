@@ -1,7 +1,8 @@
 package com.example.minicraftserver.domain.work.domain.enums
 
+import com.example.minicraftserver.domain.work.domain.data.ItemStack
 import com.example.minicraftserver.global.enums.ItemType
-import java.util.*
+import java.util.EnumMap
 import kotlin.random.Random
 
 enum class RegionType {
@@ -9,20 +10,19 @@ enum class RegionType {
     PLAINS;
 
     companion object {
-        private val gather = mutableListOf<List<ItemType>>()
-        private val battle = mutableListOf<List<ItemType>>()
+        private var gather = emptyList<List<ItemType>>()
+        private var battle = emptyList<List<ItemType>>()
     }
 
-    init {
-        entries.forEach { region ->
-            gather.add(ItemType.entries.filter { it.region == region && it.gather != null })
-            battle.add(ItemType.entries.filter { it.region == region && it.battle != null })
-        }
+    fun getGatherItems(): List<ItemType> {
+        if (gather.isEmpty()) gather = entries.map { region -> ItemType.entries.filter { it.region == region && it.gather != null } }
+        return gather[ordinal]
     }
 
-    fun getGatherItems(): List<ItemType> = gather[ordinal]
-
-    fun getBattleItems(): List<ItemType> = battle[ordinal]
+    fun getBattleItems(): List<ItemType> {
+        if (battle.isEmpty()) battle = entries.map { region -> ItemType.entries.filter { it.region == region && it.battle != null } }
+        return battle[ordinal]
+    }
 
     /**
      * 해당 지역에서의 전투 결과 얻기
@@ -87,8 +87,4 @@ enum class RegionType {
         val items: List<ItemStack>
     )
 
-    data class ItemStack(
-        val type: ItemType,
-        val amount: Int
-    )
 }
