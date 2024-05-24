@@ -14,4 +14,5 @@ object Dependencies {
     const val CONFIGURATION_PROCESSOR = "org.springframework.boot:spring-boot-configuration-processor"
     const val SECURITY_TEST = "org.springframework.security:spring-security-test"
     const val TEST = "org.springframework.boot:spring-boot-starter-test"
+    const val JAXB = "javax.xml.bind:jaxb-api:${DependencyVersions.JAXB}"
 }
