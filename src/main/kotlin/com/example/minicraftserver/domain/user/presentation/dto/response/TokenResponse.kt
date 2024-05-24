@@ -5,5 +5,5 @@ import java.time.LocalDateTime
 data class TokenResponse(
     val accessToken: String,
     val refreshToken: String,
-    val expiresAt: LocalDateTime,
+    val expiredAt: LocalDateTime,
 )
