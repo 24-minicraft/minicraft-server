@@ -11,7 +11,7 @@ class WebConfig : WebMvcConfigurer {
         registry
             .addMapping("/**")
             .allowedHeaders("*")
-            .allowedMethods("GET", "POST", "PUT", "DELETE")
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
             .allowedOrigins("http://localhost:3000", "http://localhost:3001")
     }
 }
