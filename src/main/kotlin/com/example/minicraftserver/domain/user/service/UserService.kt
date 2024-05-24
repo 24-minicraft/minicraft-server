@@ -21,7 +21,6 @@ class UserService(
     private val userRepository: UserRepository,
     private val userFacade: UserFacade,
     private val jwtTokenProvider: JwtTokenProvider,
-    private val jwtProperties: JwtProperties,
 ) {
 
     @Transactional
@@ -49,9 +48,9 @@ class UserService(
         return jwtTokenProvider.getToken(user.accountId)
     }
 
+    @Transactional(readOnly = true)
     fun querySeeds(): QueryUserSeedsResponse {
         val user = userFacade.getCurrentUser()
-
         return QueryUserSeedsResponse(user.seeds)
     }
 }
