@@ -31,7 +31,7 @@ class JwtTokenProvider(
         val refreshToken: String = generateRefreshToken(accountId)
         val expiredAt: LocalDateTime = LocalDateTime.now().plusSeconds(jwtProperties.accessExp)
 
-        return TokenResponse(accessToken = accessToken, refreshToken = refreshToken, expiredAt = expiresAt)
+        return TokenResponse(accessToken = accessToken, refreshToken = refreshToken, expiredAt = expiredAt)
     }
 
     fun generateRefreshToken(accountId: String): String {
