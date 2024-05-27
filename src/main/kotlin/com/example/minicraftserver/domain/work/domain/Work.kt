@@ -2,11 +2,11 @@ package com.example.minicraftserver.domain.work.domain
 
 import com.example.minicraftserver.domain.work.domain.enums.RegionType
 import com.example.minicraftserver.domain.work.domain.enums.WorkType
-import com.example.minicraftserver.global.entity.BaseIdEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
@@ -14,7 +14,8 @@ import java.time.LocalDateTime
 @Table(name = "tbl_work")
 @Entity
 class Work(
-    id: Long = 0,
+    @Id
+    val id: Long,
 
     @NotNull
     @Column(columnDefinition = "VARCHAR(10) DEFAULT 'COLLECTION'")
@@ -32,4 +33,4 @@ class Work(
     @NotNull
     @Column(columnDefinition = "INT DEFAULT 0")
     val duration: Int,
-) : BaseIdEntity(id)
+)
