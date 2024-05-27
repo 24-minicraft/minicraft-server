@@ -5,9 +5,11 @@ import com.example.minicraftserver.domain.item.domain.Item
 import com.example.minicraftserver.domain.item.domain.repository.ItemRepository
 import com.example.minicraftserver.domain.item.exception.GatheringTooFastException
 import com.example.minicraftserver.domain.item.exception.ItemNotGatherException
+import com.example.minicraftserver.domain.item.presentation.dto.response.EquipmentResponse
 import com.example.minicraftserver.domain.item.presentation.dto.response.InventoryResponse
 import com.example.minicraftserver.domain.user.domain.User
 import com.example.minicraftserver.domain.user.facade.UserFacade
+import com.example.minicraftserver.domain.work.domain.data.EquipmentStack
 import com.example.minicraftserver.domain.work.domain.data.ItemStack
 import com.example.minicraftserver.global.enums.ItemCategory
 import com.example.minicraftserver.global.enums.ItemType
@@ -213,6 +215,28 @@ class ItemService(
             itemRepository.findByUser(user).mapNotNull {
                 if (it.itemType.category != ItemCategory.MATERIAL) return@mapNotNull null
                 ItemStack(it.itemType, it.amount)
+            }
+        )
+    }
+
+    /**
+     * 유저의 장착 가능 아이템 전체 조회
+     * @return [InventoryResponse]로 [ItemCategory.MATERIAL] 카테고리에 해당하지 않는 모든 아이템을 조회하여 반환
+     */
+    fun getEquipmentResponse(): EquipmentResponse {
+        val user = userFacade.getCurrentUser()
+        return EquipmentResponse(
+            itemRepository.findByUser(user).mapNotNull {
+                if (it.itemType.category == ItemCategory.MATERIAL) return@mapNotNull null
+                EquipmentStack(
+                    it.id,
+                    it.itemType,
+                    it.itemType.category,
+                    it.itemType.equipment?.health!!,
+                    it.itemType.equipment.defense!!,
+                    it.itemType.equipment.lucky!!,
+                    equipmentRepository.existsByUser_IdAndType(user.id, it.itemType)
+                )
             }
         )
     }
