@@ -14,8 +14,9 @@ spring:
 
   data:
     redis:
-      port: ${REDIS_PORT}
       host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
 
   jackson:
     property-naming-strategy: SNAKE_CASE
