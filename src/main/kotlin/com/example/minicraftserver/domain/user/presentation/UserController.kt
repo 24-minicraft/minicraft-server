@@ -3,6 +3,7 @@ package com.example.minicraftserver.domain.user.presentation
 import com.example.minicraftserver.domain.user.presentation.dto.request.UserLonginRequest
 import com.example.minicraftserver.domain.user.presentation.dto.request.UserSignUpRequest
 import com.example.minicraftserver.domain.user.presentation.dto.response.QueryUserSeedsResponse
+import com.example.minicraftserver.domain.user.presentation.dto.response.TokenResponse
 import com.example.minicraftserver.domain.user.service.UserService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RestController
 class UserController(
     private val userService: UserService
@@ -27,8 +28,8 @@ class UserController(
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/login")
-    fun userLogin(@Valid @RequestBody request: UserLonginRequest) {
-        userService.login(request)
+    fun userLogin(@Valid @RequestBody request: UserLonginRequest): TokenResponse {
+        return userService.login(request)
     }
 
     @ResponseStatus(HttpStatus.OK)

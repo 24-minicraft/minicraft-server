@@ -38,6 +38,7 @@ dependencies {
     implementation(Dependencies.REDIS)
     annotationProcessor(Dependencies.CONFIGURATION_PROCESSOR)
     implementation(Dependencies.JWT)
+    implementation (Dependencies.JAXB)
 }
 
 tasks.withType<KotlinCompile> {
