@@ -13,6 +13,8 @@ import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.time.ZoneOffset
+import kotlin.math.min
 
 @Service
 class WorkService(
@@ -31,10 +33,13 @@ class WorkService(
         val character = characterRepository.findByIdOrNull(characterId) ?: throw CharacterNotFoundException
         val work = workRepository.findByIdOrNull(characterId) ?: throw NotWorkingException
 
+        val zoneOffset = ZoneOffset.ofHours(9)
+        val duration = min(work.duration, (LocalDateTime.now().toEpochSecond(zoneOffset) - work.startTime.toEpochSecond(zoneOffset)).toInt())
+
         val items = if (work.workType == WorkType.COLLECTION) {
-            work.regionType.getGatherResult(work.duration, 0).items
+            work.regionType.getGatherResult(duration, 0).items
         } else {
-            val result = work.regionType.getBattleResult(work.duration, character.getCurrentHealth(), 0)
+            val result = work.regionType.getBattleResult(duration, character.getCurrentHealth(), 0)
             character.health = result.remainHealth
             character.lastDamaged = LocalDateTime.now()
             result.items
