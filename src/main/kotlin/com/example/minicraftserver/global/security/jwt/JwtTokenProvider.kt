@@ -3,11 +3,13 @@ package com.example.minicraftserver.global.security.jwt
 import com.example.minicraftserver.domain.user.domain.RefreshToken
 import com.example.minicraftserver.domain.user.domain.repository.RefreshTokenRepository
 import com.example.minicraftserver.domain.user.presentation.dto.response.TokenResponse
+import com.example.minicraftserver.global.exception.InternalServerErrorException
 import com.example.minicraftserver.global.exception.TokenExpiredException
 import com.example.minicraftserver.global.exception.TokenInvalidException
 import com.example.minicraftserver.global.security.auth.AuthDetailsService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.InvalidClaimException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import jakarta.servlet.http.HttpServletRequest
@@ -25,70 +27,66 @@ class JwtTokenProvider(
     private val refreshTokenRepository: RefreshTokenRepository
 ) {
     fun getToken(accountId: String): TokenResponse {
-        val accessToken: String = generateAccessToken(accountId)
+        val accessToken: String = generateToken(accountId, jwtProperties.accessExp)
         val refreshToken: String = generateRefreshToken(accountId)
-        val expiresAt: LocalDateTime = LocalDateTime.now().plusSeconds(jwtProperties.accessExp)
+        val expiredAt: LocalDateTime = LocalDateTime.now().plusSeconds(jwtProperties.accessExp)
 
         return TokenResponse(accessToken = accessToken, refreshToken = refreshToken, expiredAt = expiresAt)
     }
 
-    fun generateAccessToken(accountId: String): String {
-        return createToken(accountId, "access", jwtProperties.accessExp)
-    }
-
     fun generateRefreshToken(accountId: String): String {
-        val refreshToken = createToken(accountId, "refresh", jwtProperties.refreshExp)
-
+        val newRefreshToken: String = generateToken(accountId, jwtProperties.refreshExp)
         refreshTokenRepository.save(
             RefreshToken(
-                accountId = accountId,
-                token = refreshToken
+                accountId = (accountId),
+                token = newRefreshToken
             )
         )
-
-        return refreshToken
+        return newRefreshToken
     }
 
-    private fun createToken(accountId: String, typ: String, exp: Long): String {
-        return jwtProperties.prefix + Jwts.builder()
+    private fun generateToken(accountId: String, expiration: Long): String {
+        return Jwts.builder().signWith(SignatureAlgorithm.HS256, jwtProperties.secretKey)
             .setSubject(accountId)
-            .claim("typ", typ)
-            .signWith(SignatureAlgorithm.HS256, jwtProperties.secretKey)
-            .setExpiration(Date(System.currentTimeMillis() + exp * 1000))
+            .setHeaderParam("typ", "access")
             .setIssuedAt(Date())
+            .setExpiration(Date(System.currentTimeMillis() + expiration * 1000))
             .compact()
     }
 
-    fun getAuthentication(token: String): UsernamePasswordAuthenticationToken {
-        val userDetails: UserDetails = authDetailsService.loadUserByUsername(getAccountId(token))
-        return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
+    fun resolveToken(request: HttpServletRequest): String? {
+        val bearer: String? = request.getHeader("Authorization")
+
+        return parseToken(bearer)
     }
 
-    private fun getAccountId(token: String): String {
-        return getClaims(token).subject
+    fun parseToken(bearerToken: String?): String? {
+        return if (bearerToken != null && bearerToken.startsWith("Bearer")) {
+            return bearerToken.replace("Bearer", "")
+        } else null
     }
 
-    private fun getClaims(token: String): Claims {
-        return try {
-            Jwts.parser()
-                .setSigningKey(jwtProperties.secretKey)
-                .parseClaimsJws(token)
-                .body
-        } catch (e: ExpiredJwtException) {
-            throw TokenExpiredException
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw TokenInvalidException
+    fun authorization(token: String): UsernamePasswordAuthenticationToken? {
+        return token?.let {
+            val userDetails: UserDetails = authDetailsService.loadUserByUsername(getTokenSubject(token))
+            return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
         }
     }
 
-    fun resolveToken(request: HttpServletRequest): String? {
-        val bearerToken = request.getHeader(jwtProperties.header)
+    private fun getTokenSubject(subject: String): String {
+        return getTokenBody(subject).subject
+    }
 
-        return if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(jwtProperties.prefix)
-            && bearerToken.length > jwtProperties.prefix.length + 1
-        ) {
-            bearerToken.substring(jwtProperties.prefix.length)
-        } else null
+    private fun getTokenBody(token: String?): Claims {
+        return try {
+            Jwts.parser().setSigningKey(jwtProperties.secretKey)
+                .parseClaimsJws(token).body
+        } catch (e: Exception) {
+            when (e) {
+                is ExpiredJwtException -> throw TokenExpiredException
+                is InvalidClaimException -> throw TokenInvalidException
+                else -> throw InternalServerErrorException
+            }
+        }
     }
 }
