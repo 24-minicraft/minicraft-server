@@ -11,6 +11,7 @@ enum class ItemType(
     val battle: BattleData? = null,
     val craft: CraftData? = null,
     val market: MarketData? = null,
+    val equipment: EquipmentData? = null,
     val category: ItemCategory = ItemCategory.MATERIAL
 ) {
     // 아이템
@@ -144,6 +145,18 @@ enum class ItemType(
         companion object {
             fun sell(price: Int) = MarketData(price, null)
             fun buy(price: Int) = MarketData(null, price)
+        }
+    }
+
+    data class EquipmentData(
+        val health: Int?,
+        val defense: Int?,
+        val lucky: Int?
+    ) {
+        companion object {
+            fun armor(health: Int, defense: Int) = EquipmentData(health, defense, null)
+            fun lucky(lucky: Int) = EquipmentData(null, null, lucky)
+            fun all(health: Int, defense: Int, lucky: Int) = EquipmentData(health, defense, lucky)
         }
     }
 }

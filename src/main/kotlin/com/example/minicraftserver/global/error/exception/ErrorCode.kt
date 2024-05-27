@@ -21,9 +21,13 @@ enum class ErrorCode(
 
     ITEM_NOT_GATHER(400, "Item is not gatherable"),
 
+    ITEM_NOT_FOUND(404, "Item not found."),
+
     GATHERING_TOO_FAST(403, "Gathering Too Fast"),
 
     CHARACTER_NOT_FOUND(404, "Character not found."),
+
+    CHARACTER_NOT_YOURS(403, "This character is not yours."),
 
     ALREADY_WORKING(400, "Character is already working on."),
 

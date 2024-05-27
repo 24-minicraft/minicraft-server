@@ -1,5 +1,6 @@
 package com.example.minicraftserver.domain.item.presentation
 
+import com.example.minicraftserver.domain.item.presentation.dto.response.EquipmentResponse
 import com.example.minicraftserver.domain.item.presentation.dto.response.InventoryResponse
 import com.example.minicraftserver.domain.item.service.ItemService
 import com.example.minicraftserver.global.enums.ItemType
@@ -22,8 +23,8 @@ class ItemController(
     }
 
     @GetMapping("/equipment")
-    fun equipment(): InventoryResponse {
-        TODO() // TODO: Equipment Entity Fix Required -> No User Field
+    fun equipment(): EquipmentResponse {
+        return itemService.getEquipmentResponse()
     }
 
     @PatchMapping("/{type}")

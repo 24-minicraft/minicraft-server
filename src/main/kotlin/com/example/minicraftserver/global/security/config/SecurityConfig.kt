@@ -25,9 +25,6 @@ class SecurityConfig(
             formLogin { disable() }
 
             authorizeHttpRequests {
-                authorize(HttpMethod.POST, "/users/signup", permitAll)
-                authorize(HttpMethod.POST, "/users/login", permitAll)
-                authorize(HttpMethod.GET, "/users/seeds", authenticated)
 
                 authorize(HttpMethod.GET, "/craft", authenticated)
                 authorize(HttpMethod.PATCH, "/craft/{type}", authenticated)
@@ -37,6 +34,17 @@ class SecurityConfig(
                 authorize(HttpMethod.PATCH, "/item/{type}", authenticated)
 
                 authorize(HttpMethod.GET, "/market/materials", authenticated)
+
+                authorize(HttpMethod.POST, "/users/login", permitAll)
+                authorize(HttpMethod.GET, "/users/seeds", authenticated)
+                authorize(HttpMethod.POST, "/users/signup", permitAll)
+
+                authorize(HttpMethod.DELETE, "/works/end", authenticated)
+                authorize(HttpMethod.POST, "/works/start", authenticated)
+
+                authorize(HttpMethod.PATCH, "/characters", authenticated)
+                authorize(HttpMethod.GET, "/characters/list", authenticated)
+                authorize(HttpMethod.GET, "/characters/{id}", authenticated)
 
 
             }

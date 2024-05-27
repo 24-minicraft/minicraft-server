@@ -5,4 +5,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface CharacterRepository : CrudRepository<Character, Long>
+interface CharacterRepository : CrudRepository<Character, Long> {
+
+    fun findByUser_Id(id: Long): List<Character>
+}

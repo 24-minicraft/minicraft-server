@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull
 
 @Table(name = "tbl_user")
 @Entity
-class User (
+class User(
     id: Long = 0,
 
     @NotNull
@@ -21,4 +21,11 @@ class User (
 
     @Column(columnDefinition = "INT DEFAULT 0")
     val seeds: Int,
-) : BaseIdEntity(id)
+) : BaseIdEntity(id) {
+    override fun equals(other: Any?): Boolean {
+        if (other is User) {
+            return this.id == other.id
+        }
+        return super.equals(other)
+    }
+}
