@@ -23,13 +23,13 @@ class WorkService(
     private val itemService: ItemService
 ) {
     @Transactional
-    fun start(characterId: Long, type: WorkType, req: WorkRequest) {
+    fun startWork(characterId: Long, type: WorkType, req: WorkRequest) {
         val character = characterRepository.findByIdOrNull(characterId) ?: throw CharacterNotFoundException
         character.work = workRepository.save(Work(characterId, type, req.region, LocalDateTime.now(), req.duration))
     }
 
     @Transactional
-    fun end(characterId: Long): WorkResponse {
+    fun endWork(characterId: Long): WorkResponse {
         val character = characterRepository.findByIdOrNull(characterId) ?: throw CharacterNotFoundException
         val work = workRepository.findByIdOrNull(characterId) ?: throw NotWorkingException
 

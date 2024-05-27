@@ -2,6 +2,7 @@ package com.example.minicraftserver.domain.work.presentation
 
 import com.example.minicraftserver.domain.work.domain.enums.WorkType
 import com.example.minicraftserver.domain.work.presentation.dto.request.WorkRequest
+import com.example.minicraftserver.domain.work.presentation.dto.response.WorkResponse
 import com.example.minicraftserver.domain.work.service.WorkService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -18,18 +19,18 @@ class WorkController(
 ) {
 
     @PostMapping("/start")
-    fun start(
+    fun startWork(
         @RequestParam characterId: Long,
         @RequestParam type: WorkType,
         @Valid @RequestBody req: WorkRequest
     ) {
-        workService.start(characterId, type, req)
+        workService.startWork(characterId, type, req)
     }
 
     @DeleteMapping("/end")
-    fun end(
+    fun endWork(
         @RequestParam characterId: Long
-    ) {
-        workService.end(characterId)
+    ): WorkResponse {
+        return workService.endWork(characterId)
     }
 }

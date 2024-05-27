@@ -3,7 +3,6 @@ package com.example.minicraftserver.domain.character.domain
 import com.example.minicraftserver.domain.user.domain.User
 import com.example.minicraftserver.domain.work.domain.Work
 import com.example.minicraftserver.global.entity.BaseIdEntity
-import com.fasterxml.jackson.annotation.JsonFormat
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -28,7 +27,6 @@ class Character(
     @Column(columnDefinition = "INT DEFAULT 100")
     var health: Int,
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     var lastDamaged: LocalDateTime?,
 
     @OneToOne(fetch = FetchType.LAZY)
