@@ -38,7 +38,8 @@ class SecurityConfig(
 
                 authorize(HttpMethod.GET, "/market/materials", authenticated)
 
-
+                authorize(HttpMethod.POST, "/works/start", authenticated)
+                authorize(HttpMethod.DELETE, "/works/end", authenticated)
             }
 
             sessionManagement { sessionCreationPolicy = SessionCreationPolicy.STATELESS }
