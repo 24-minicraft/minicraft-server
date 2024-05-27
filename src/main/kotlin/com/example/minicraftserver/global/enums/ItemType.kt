@@ -2,67 +2,84 @@ package com.example.minicraftserver.global.enums
 
 import com.example.minicraftserver.domain.work.domain.data.ItemStack
 import com.example.minicraftserver.domain.work.domain.enums.RegionType
+import com.example.minicraftserver.global.enums.ItemType.MarketData.Companion.buy
+import com.example.minicraftserver.global.enums.ItemType.MarketData.Companion.sell
 
 enum class ItemType(
     val region: RegionType? = null,
     val gather: Int? = null,
     val battle: BattleData? = null,
     val craft: CraftData? = null,
+    val market: MarketData? = null,
     val category: ItemCategory = ItemCategory.MATERIAL
 ) {
     // 아이템
     LOG(
         RegionType.PLAINS,
         gather = 4,
+        market = sell(4)
     ),
     STRAW(
         RegionType.PLAINS,
-        gather = 10
+        gather = 10,
+        market = sell(2)
     ),
     WOLF_TOOTH(
         RegionType.PLAINS,
-        battle = BattleData(1.0, 1..2, 1)
+        battle = BattleData(1.0, 1..2, 1),
+        market = sell(3)
     ),
     RAW_RABBIT(
         RegionType.PLAINS,
-        battle = BattleData(.2, 1..1, 0)
+        battle = BattleData(.2, 1..1, 0),
+        market = sell(10)
     ),
     RAW_BOAR(
         RegionType.PLAINS,
-        battle = BattleData(.1, 1..1, 5)
+        battle = BattleData(.1, 1..1, 5),
+        market = sell(60)
     ),
     COBBLESTONE(
         RegionType.MINE,
-        gather = 2
+        gather = 2,
+        market = sell(2)
     ),
     COAL(
         RegionType.MINE,
-        gather = 5
+        gather = 5,
+        market = sell(35)
     ),
     COPPER_ORE(
         RegionType.MINE,
-        gather = 15
+        gather = 15,
+        market = sell(200)
     ),
     IRON_ORE(
         RegionType.MINE,
-        gather = 4
+        gather = 45,
+        market = sell(500)
     ),
 
     // 장비
     LEATHER_CLOTHES(
-        category = ItemCategory.ARMOR
+        category = ItemCategory.ARMOR,
+        market = buy(100)
     ),
     CHAIN_ARMOR(
-        category = ItemCategory.ARMOR
+        category = ItemCategory.ARMOR,
+        market = buy(800)
     ),
     COPPER_ARMOR(
-        category = ItemCategory.ARMOR
+        category = ItemCategory.ARMOR,
+        market = buy(1500)
     ),
     BRONZE_ARMOR(
-        category = ItemCategory.ARMOR
+        category = ItemCategory.ARMOR,
+        market = buy(4500)
     ),
     IRON_ARMOR(
-        category = ItemCategory.ARMOR
+        category = ItemCategory.ARMOR,
+        market = buy(12000)
     ),
 
     // 조합
@@ -118,5 +135,15 @@ enum class ItemType(
     ) {
         constructor(vararg requires: ItemStack) : this(requires.toList())
         constructor(amount: Int, vararg requires: ItemStack) : this(requires.toList(), amount)
+    }
+
+    data class MarketData(
+        val sellPrice: Int?,
+        val buyPrice: Int?
+    ) {
+        companion object {
+            fun sell(price: Int) = MarketData(price, null)
+            fun buy(price: Int) = MarketData(null, price)
+        }
     }
 }

@@ -11,10 +11,12 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Table(name = "tbl_character")
 @Entity
-class Character (
+class Character(
     id: Long,
 
     @NotNull
@@ -23,15 +25,22 @@ class Character (
 
     @NotNull
     @Column(columnDefinition = "INT DEFAULT 100")
-    val health: Int,
+    var health: Int,
 
-    @NotNull
+    var lastDamaged: LocalDateTime?,
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_id")
-    val work: Work,
+    var work: Work?,
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val user: User,
-) : BaseIdEntity(id)
+) : BaseIdEntity(id) {
+
+    fun getCurrentHealth(): Int {
+        val zoneOffset = ZoneOffset.ofHours(9)
+        return health + (lastDamaged?.let { (LocalDateTime.now().toEpochSecond(zoneOffset) - it.toEpochSecond(zoneOffset)) / 36 } ?: 0L).toInt()
+    }
+}

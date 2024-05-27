@@ -23,5 +23,11 @@ enum class ErrorCode(
 
     GATHERING_TOO_FAST(403, "Gathering Too Fast"),
 
+    CHARACTER_NOT_FOUND(404, "Character not found."),
+
+    ALREADY_WORKING(400, "Character is already working on."),
+
+    NOT_WORKING(404, "Character is not working on."),
+
     ;
 }

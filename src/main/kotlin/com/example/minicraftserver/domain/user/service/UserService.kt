@@ -1,15 +1,14 @@
 package com.example.minicraftserver.domain.user.service
 
 import com.example.minicraftserver.domain.user.domain.User
-import com.example.minicraftserver.domain.user.exception.UserAlreadyExist
 import com.example.minicraftserver.domain.user.domain.repository.UserRepository
 import com.example.minicraftserver.domain.user.exception.PasswordMisMatchedException
+import com.example.minicraftserver.domain.user.exception.UserAlreadyExist
 import com.example.minicraftserver.domain.user.facade.UserFacade
 import com.example.minicraftserver.domain.user.presentation.dto.request.UserLonginRequest
 import com.example.minicraftserver.domain.user.presentation.dto.request.UserSignUpRequest
 import com.example.minicraftserver.domain.user.presentation.dto.response.QueryUserSeedsResponse
 import com.example.minicraftserver.domain.user.presentation.dto.response.TokenResponse
-import com.example.minicraftserver.global.security.jwt.JwtProperties
 import com.example.minicraftserver.global.security.jwt.JwtTokenProvider
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
