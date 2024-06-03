@@ -1,5 +1,6 @@
 package com.example.minicraftserver.domain.market.presentation
 
+import com.example.minicraftserver.domain.market.presentation.dto.response.QueryBuyEquipmentResponse
 import com.example.minicraftserver.domain.market.presentation.dto.response.QuerySellMaterialsResponse
 import com.example.minicraftserver.domain.market.service.MarketService
 import org.springframework.http.HttpStatus
@@ -18,5 +19,11 @@ class MarketController(
     @GetMapping("/materials")
     fun querySellMaterials(): QuerySellMaterialsResponse {
         return marketService.querySellMaterials()
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/equipments")
+    fun queryBuyEquipments(): QueryBuyEquipmentResponse {
+        return marketService.queryBuyEquipments()
     }
 }
