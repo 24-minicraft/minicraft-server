@@ -3,21 +3,24 @@ package com.example.minicraftserver.domain.market.service
 import com.example.minicraftserver.domain.market.domain.repository.MarketRepository
 import com.example.minicraftserver.domain.market.presentation.dto.response.Material
 import com.example.minicraftserver.domain.market.presentation.dto.response.QuerySellMaterialsResponse
+import com.example.minicraftserver.global.enums.ItemType
 import org.springframework.stereotype.Service
 
 @Service
-class MarketService(
-    private val marketRepository: MarketRepository
-) {
+class MarketService {
 
     fun querySellMaterials(): QuerySellMaterialsResponse {
-        val market = marketRepository.findAll()
+        val items = ItemType.entries
+        val startIdx = items.indexOf(ItemType.LOG)
+        val endIdx = items.indexOf(ItemType.IRON_ORE)
+
+        val materials = items.slice(startIdx..endIdx)
 
         return QuerySellMaterialsResponse(
-            materials = market.map {
+            materials = materials.map {
                 Material(
-                    it.market,
-                    it.sellCost
+                    it,
+                    it.market?.sellPrice
                 )
             }
         )

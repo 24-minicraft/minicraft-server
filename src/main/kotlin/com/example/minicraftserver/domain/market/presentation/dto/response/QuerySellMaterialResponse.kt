@@ -8,5 +8,5 @@ data class QuerySellMaterialsResponse(
 
 data class Material (
     val type: ItemType,
-    val price: Int
+    val price: Int?
 )
