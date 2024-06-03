@@ -3,7 +3,7 @@ package com.example.minicraftserver.domain.market.presentation.dto.response
 import com.example.minicraftserver.global.enums.ItemType
 
 data class QueryBuyEquipmentResponse (
-    val equipment : List<Equipment>
+    val equipments : List<Equipment>
 )
 
 data class Equipment (

@@ -35,7 +35,7 @@ class MarketService {
         val equipments = items.slice(startIdx..endIdx)
 
         return QueryBuyEquipmentResponse(
-            equipment = equipments.map {
+            equipments = equipments.map {
                 Equipment(
                     it,
                     it.equipment?.health,
