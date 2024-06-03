@@ -20,12 +20,15 @@ class User(
     val password: String,
 
     @Column(columnDefinition = "INT DEFAULT 0")
-    val seeds: Int,
+    var seeds: Int,
 ) : BaseIdEntity(id) {
     override fun equals(other: Any?): Boolean {
         if (other is User) {
             return this.id == other.id
         }
         return super.equals(other)
+    }
+    fun update(price: Int) {
+        this.seeds -= price
     }
 }

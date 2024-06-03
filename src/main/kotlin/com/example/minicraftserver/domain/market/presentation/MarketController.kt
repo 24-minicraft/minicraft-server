@@ -3,8 +3,12 @@ package com.example.minicraftserver.domain.market.presentation
 import com.example.minicraftserver.domain.market.presentation.dto.response.QueryBuyEquipmentResponse
 import com.example.minicraftserver.domain.market.presentation.dto.response.QuerySellMaterialsResponse
 import com.example.minicraftserver.domain.market.service.MarketService
+import com.example.minicraftserver.domain.user.presentation.dto.response.QueryUserSeedsResponse
+import com.example.minicraftserver.global.enums.ItemType
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
@@ -25,5 +29,11 @@ class MarketController(
     @GetMapping("/equipments")
     fun queryBuyEquipments(): QueryBuyEquipmentResponse {
         return marketService.queryBuyEquipments()
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/sell/{type}")
+    fun sellMaterial(@PathVariable("type") type: ItemType): QueryUserSeedsResponse {
+        return marketService.sellMaterials(type)
     }
 }

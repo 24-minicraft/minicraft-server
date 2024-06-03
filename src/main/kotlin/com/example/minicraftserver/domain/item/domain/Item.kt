@@ -31,4 +31,8 @@ class Item(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val user: User,
-) : BaseIdEntity(id)
+) : BaseIdEntity(id) {
+    fun update() {
+        amount -= 1
+    }
+}
