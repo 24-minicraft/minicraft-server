@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CharacterRepository : CrudRepository<Character, Long> {
 
-    fun findByUser_Id(id: Long): List<Character>
+    fun findByUserId(id: Long): List<Character>
+    fun countAllByUserId(userId: Long): Int
 }

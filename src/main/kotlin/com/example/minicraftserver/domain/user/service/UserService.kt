@@ -3,7 +3,7 @@ package com.example.minicraftserver.domain.user.service
 import com.example.minicraftserver.domain.user.domain.User
 import com.example.minicraftserver.domain.user.domain.repository.UserRepository
 import com.example.minicraftserver.domain.user.exception.PasswordMisMatchedException
-import com.example.minicraftserver.domain.user.exception.UserAlreadyExist
+import com.example.minicraftserver.domain.user.exception.UserAlreadyExistException
 import com.example.minicraftserver.domain.user.facade.UserFacade
 import com.example.minicraftserver.domain.user.presentation.dto.request.UserLonginRequest
 import com.example.minicraftserver.domain.user.presentation.dto.request.UserSignUpRequest
@@ -25,7 +25,7 @@ class UserService(
     @Transactional
     fun signUp(request: UserSignUpRequest) {
         if (userRepository.existsByAccountId(request.accountId)) {
-            throw UserAlreadyExist
+            throw UserAlreadyExistException
         }
 
         userRepository.save(

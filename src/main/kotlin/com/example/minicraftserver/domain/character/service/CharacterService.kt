@@ -1,14 +1,20 @@
 package com.example.minicraftserver.domain.character.service
 
+import com.example.minicraftserver.domain.character.domain.Character
 import com.example.minicraftserver.domain.character.domain.repository.CharacterRepository
 import com.example.minicraftserver.domain.character.exception.CharacterNotFoundException
 import com.example.minicraftserver.domain.character.exception.CharacterNotYoursException
+import com.example.minicraftserver.domain.character.presentation.dto.request.CreateCharacterRequest
 import com.example.minicraftserver.domain.character.presentation.dto.response.CharacterResponses
 import com.example.minicraftserver.domain.character.presentation.dto.response.WorkStateResponse
 import com.example.minicraftserver.domain.item.service.ItemService
+import com.example.minicraftserver.domain.user.exception.SeedShortageException
 import com.example.minicraftserver.domain.user.facade.UserFacade
+import org.hibernate.Internal
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import kotlin.math.pow
 
 @Service
 class CharacterService(
@@ -18,7 +24,7 @@ class CharacterService(
 ) {
     fun getAllCharacter(): CharacterResponses {
         return CharacterResponses(
-            characterRepository.findByUser_Id(userFacade.getCurrentUser().id).map { character ->
+            characterRepository.findByUserId(userFacade.getCurrentUser().id).map { character ->
                 CharacterResponses.CharacterResponse(
                     character.id,
                     character.name,
@@ -45,5 +51,27 @@ class CharacterService(
             itemService.getEquipmentResponse().equipments,
             character.lastDamaged
         )
+    }
+
+    @Transactional
+    fun createCharacter(request: CreateCharacterRequest) {
+        val user = userFacade.getCurrentUser()
+        val characterCount = characterRepository.countAllByUserId(user.id)
+        val const = 200 * (characterCount * characterCount)
+
+        if(user.seeds < const) throw SeedShortageException
+
+        characterRepository.save(
+            Character(
+                id = 0,
+                name = request.name,
+                health = 100,
+                lastDamaged = null,
+                work = null,
+                user = user,
+            )
+        )
+
+        user.update(const.toInt())
     }
 }
