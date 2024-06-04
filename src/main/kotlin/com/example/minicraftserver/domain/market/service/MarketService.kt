@@ -1,5 +1,6 @@
 package com.example.minicraftserver.domain.market.service
 
+import com.example.minicraftserver.domain.item.domain.Item
 import com.example.minicraftserver.domain.item.domain.repository.ItemRepository
 import com.example.minicraftserver.domain.item.exception.ItemNotFoundException
 import com.example.minicraftserver.domain.market.presentation.dto.response.Equipment
@@ -61,8 +62,30 @@ class MarketService(
         val item = itemRepository.findByUserAndItemType(user, type)
             .orElseThrow { ItemNotFoundException }
 
-        item.update()
-        user.update(item.itemType.market?.sellPrice!!)
+        item.update(item.amount - 1)
+        user.update(user.seeds + item.itemType.market?.sellPrice!!)
+
+        return QueryUserSeedsResponse(user.seeds)
+    }
+
+    @Transactional
+    fun buyEquipment(type: ItemType): QueryUserSeedsResponse {
+        val user = userFacade.getCurrentUser()
+
+        val item = itemRepository.findByUserAndItemType(user, type)
+            .orElseGet {
+                itemRepository.save(
+                    Item(
+                        id = 0,
+                        itemType = type,
+                        amount = 0,
+                        user = user
+                    )
+                )
+            }
+
+        item.update(item.amount + 1)
+        user.update(user.seeds - type.market?.buyPrice!!)
 
         return QueryUserSeedsResponse(user.seeds)
     }

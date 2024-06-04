@@ -32,7 +32,7 @@ class Item(
     @JoinColumn(name = "user_id")
     val user: User,
 ) : BaseIdEntity(id) {
-    fun update() {
-        amount -= 1
+    fun update(amount: Int) {
+        this.amount = amount
     }
 }
