@@ -28,7 +28,7 @@ class User(
         }
         return super.equals(other)
     }
-    fun update(price: Int) {
-        this.seeds -= price
+    fun update(seeds: Int) {
+        this.seeds = seeds
     }
 }
