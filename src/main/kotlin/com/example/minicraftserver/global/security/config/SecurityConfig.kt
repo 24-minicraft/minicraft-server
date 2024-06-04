@@ -45,6 +45,7 @@ class SecurityConfig(
                 authorize(HttpMethod.PATCH, "/characters", authenticated)
                 authorize(HttpMethod.GET, "/characters/list", authenticated)
                 authorize(HttpMethod.GET, "/characters/{id}", authenticated)
+                authorize(HttpMethod.POST, "/characters", authenticated)
             }
 
             sessionManagement { sessionCreationPolicy = SessionCreationPolicy.STATELESS }
