@@ -57,7 +57,7 @@ class CharacterService(
     fun createCharacter(request: CreateCharacterRequest) {
         val user = userFacade.getCurrentUser()
         val characterCount = characterRepository.countAllByUserId(user.id)
-        val const = 200 * characterCount.toDouble().pow(2)
+        val const = 200 * (characterCount * characterCount)
 
         if(user.seeds < const) throw SeedShortageException
 
