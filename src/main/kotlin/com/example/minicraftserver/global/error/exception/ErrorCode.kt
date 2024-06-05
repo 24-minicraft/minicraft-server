@@ -33,5 +33,7 @@ enum class ErrorCode(
 
     NOT_WORKING(404, "Character is not working on."),
 
-    SEED_SHORTAGE(409, "Seed Shortage");
+    SEED_SHORTAGE(409, "Seed Shortage"),
+
+    NOT_ENOUGH_SEEDS(400, "Not Enough Seeds")
 }
