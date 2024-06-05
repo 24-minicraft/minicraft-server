@@ -3,6 +3,7 @@ package com.example.minicraftserver.domain.market.service
 import com.example.minicraftserver.domain.item.domain.Item
 import com.example.minicraftserver.domain.item.domain.repository.ItemRepository
 import com.example.minicraftserver.domain.item.exception.ItemNotFoundException
+import com.example.minicraftserver.domain.market.exception.NotEnoughSeedsException
 import com.example.minicraftserver.domain.market.presentation.dto.response.Equipment
 import com.example.minicraftserver.domain.market.presentation.dto.response.Material
 import com.example.minicraftserver.domain.market.presentation.dto.response.QueryBuyEquipmentResponse
@@ -62,8 +63,17 @@ class MarketService(
         val item = itemRepository.findByUserAndItemType(user, type)
             .orElseThrow { ItemNotFoundException }
 
-        item.update(item.amount - 1)
+        if (user.seeds < item.itemType.market?.sellPrice!!) {
+            throw NotEnoughSeedsException
+        }
+
         user.update(user.seeds + item.itemType.market?.sellPrice!!)
+
+        if (item.amount - 1 <= 0) {
+            itemRepository.delete(item)
+        } else {
+            item.update(item.amount - 1)
+        }
 
         return QueryUserSeedsResponse(user.seeds)
     }
