@@ -64,23 +64,28 @@ enum class ItemType(
     // 장비
     LEATHER_CLOTHES(
         category = ItemCategory.ARMOR,
-        market = buy(100)
+        market = buy(100),
+        equipment = EquipmentData.armor(0, 15)
     ),
     CHAIN_ARMOR(
         category = ItemCategory.ARMOR,
-        market = buy(800)
+        market = buy(800),
+        equipment = EquipmentData.armor(5, 40)
     ),
     COPPER_ARMOR(
         category = ItemCategory.ARMOR,
-        market = buy(1500)
+        market = buy(1500),
+        equipment = EquipmentData.armor(10, 90)
     ),
     BRONZE_ARMOR(
         category = ItemCategory.ARMOR,
-        market = buy(4500)
+        market = buy(4500),
+        equipment = EquipmentData.armor(25, 170)
     ),
     IRON_ARMOR(
         category = ItemCategory.ARMOR,
-        market = buy(12000)
+        market = buy(12000),
+        equipment = EquipmentData.armor(35, 380)
     ),
 
     // 조합

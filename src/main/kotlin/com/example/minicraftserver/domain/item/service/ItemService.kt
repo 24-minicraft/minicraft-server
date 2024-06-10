@@ -232,9 +232,9 @@ class ItemService(
                     it.id,
                     it.itemType,
                     it.itemType.category,
-                    it.itemType.equipment?.health!!,
-                    it.itemType.equipment.defense!!,
-                    it.itemType.equipment.lucky!!,
+                    it.itemType.equipment?.health ?: 0,
+                    it.itemType.equipment?.defense ?: 0,
+                    it.itemType.equipment?.lucky ?: 0,
                     equipmentRepository.existsByUser_IdAndType(user.id, it.itemType)
                 )
             }
