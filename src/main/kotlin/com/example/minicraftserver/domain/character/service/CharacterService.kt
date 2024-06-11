@@ -10,11 +10,9 @@ import com.example.minicraftserver.domain.character.presentation.dto.response.Wo
 import com.example.minicraftserver.domain.item.service.ItemService
 import com.example.minicraftserver.domain.user.exception.SeedShortageException
 import com.example.minicraftserver.domain.user.facade.UserFacade
-import org.hibernate.Internal
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlin.math.pow
 
 @Service
 class CharacterService(
@@ -25,13 +23,15 @@ class CharacterService(
     fun getAllCharacter(): CharacterResponses {
         return CharacterResponses(
             characterRepository.findByUserId(userFacade.getCurrentUser().id).map { character ->
+                val equipments = itemService.getEquipmentResponse().equipments
                 CharacterResponses.CharacterResponse(
                     character.id,
                     character.name,
                     character.health,
-                    0, 0,
+                    equipments.sumOf { it.defense },
+                    equipments.sumOf { it.lucky },
                     character.work?.let { WorkStateResponse(it.workType, it.startTime, it.duration, it.regionType) },
-                    itemService.getEquipmentResponse().equipments,
+                    equipments,
                     character.lastDamaged
                 )
             }
@@ -42,13 +42,15 @@ class CharacterService(
         val character = characterRepository.findByIdOrNull(id) ?: throw CharacterNotFoundException
         if (character.user != userFacade.getCurrentUser()) throw CharacterNotYoursException
 
+        val equipments = itemService.getEquipmentResponse().equipments
         return CharacterResponses.CharacterResponse(
             character.id,
             character.name,
             character.health,
-            0, 0,
+            equipments.sumOf { it.defense },
+            equipments.sumOf { it.lucky },
             character.work?.let { WorkStateResponse(it.workType, it.startTime, it.duration, it.regionType) },
-            itemService.getEquipmentResponse().equipments,
+            equipments,
             character.lastDamaged
         )
     }
@@ -59,7 +61,7 @@ class CharacterService(
         val characterCount = characterRepository.countAllByUserId(user.id)
         val const = 200 * (characterCount * characterCount)
 
-        if(user.seeds < const) throw SeedShortageException
+        if (user.seeds < const) throw SeedShortageException
 
         characterRepository.save(
             Character(
@@ -72,6 +74,6 @@ class CharacterService(
             )
         )
 
-        user.update(const.toInt())
+        user.update(const)
     }
 }
