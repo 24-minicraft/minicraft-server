@@ -82,19 +82,7 @@ class MarketService(
     fun buyEquipment(type: ItemType): QueryUserSeedsResponse {
         val user = userFacade.getCurrentUser()
 
-        val item = itemRepository.findByUserAndItemType(user, type)
-            .orElseGet {
-                itemRepository.save(
-                    Item(
-                        id = 0,
-                        itemType = type,
-                        amount = 0,
-                        user = user
-                    )
-                )
-            }
-
-        item.update(item.amount + 1)
+        itemRepository.save(Item(0, type, 1, user))
         user.update(user.seeds - type.market?.buyPrice!!)
 
         return QueryUserSeedsResponse(user.seeds)
