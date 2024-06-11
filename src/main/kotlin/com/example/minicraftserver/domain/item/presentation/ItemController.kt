@@ -4,6 +4,7 @@ import com.example.minicraftserver.domain.item.presentation.dto.response.Equipme
 import com.example.minicraftserver.domain.item.presentation.dto.response.InventoryResponse
 import com.example.minicraftserver.domain.item.service.ItemService
 import com.example.minicraftserver.global.enums.ItemType
+import com.example.minicraftserver.global.exception.UnknownTypeException
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -28,7 +29,11 @@ class ItemController(
     }
 
     @PatchMapping("/{type}")
-    fun gather(@Valid @PathVariable type: ItemType) {
-        itemService.gather(type)
+    fun gather(@PathVariable type: String) {
+        try {
+            itemService.gather(ItemType.valueOf(type))
+        } catch (_: IllegalArgumentException) {
+            throw UnknownTypeException
+        }
     }
 }

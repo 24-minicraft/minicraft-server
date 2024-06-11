@@ -5,6 +5,7 @@ import com.example.minicraftserver.domain.market.presentation.dto.response.Query
 import com.example.minicraftserver.domain.market.service.MarketService
 import com.example.minicraftserver.domain.user.presentation.dto.response.QueryUserSeedsResponse
 import com.example.minicraftserver.global.enums.ItemType
+import com.example.minicraftserver.global.exception.UnknownTypeException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -35,13 +36,21 @@ class MarketController(
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/sell/{type}")
-    fun sellMaterial(@PathVariable("type") type: ItemType): QueryUserSeedsResponse {
-        return marketService.sellMaterials(type)
+    fun sellMaterial(@PathVariable("type") type: String): QueryUserSeedsResponse {
+        try {
+            return marketService.sellMaterials(ItemType.valueOf(type))
+        } catch (_: IllegalArgumentException) {
+            throw UnknownTypeException
+        }
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/buy/{type}")
-    fun buyEquipment(@PathVariable("type") type: ItemType): QueryUserSeedsResponse {
-        return marketService.buyEquipment(type)
+    fun buyEquipment(@PathVariable("type") type: String): QueryUserSeedsResponse {
+        try {
+            return marketService.buyEquipment(ItemType.valueOf(type))
+        } catch (_: IllegalArgumentException) {
+            throw UnknownTypeException
+        }
     }
 }

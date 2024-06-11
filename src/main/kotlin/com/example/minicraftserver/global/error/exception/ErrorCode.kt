@@ -35,5 +35,7 @@ enum class ErrorCode(
 
     SEED_SHORTAGE(409, "Seed Shortage"),
 
-    NOT_ENOUGH_SEEDS(400, "Not Enough Seeds")
+    NOT_ENOUGH_SEEDS(400, "Not Enough Seeds"),
+
+    UNKNOWN_TYPE(400, "Unknown Type"),
 }
