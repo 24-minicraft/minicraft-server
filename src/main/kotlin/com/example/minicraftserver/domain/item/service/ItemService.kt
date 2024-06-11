@@ -225,6 +225,7 @@ class ItemService(
      */
     fun getEquipmentResponse(): EquipmentResponse {
         val user = userFacade.getCurrentUser()
+        val set = hashSetOf<ItemType>()
         return EquipmentResponse(
             itemRepository.findByUser(user).mapNotNull {
                 if (it.itemType.category == ItemCategory.MATERIAL) return@mapNotNull null
@@ -235,7 +236,10 @@ class ItemService(
                     it.itemType.equipment?.health ?: 0,
                     it.itemType.equipment?.defense ?: 0,
                     it.itemType.equipment?.lucky ?: 0,
-                    equipmentRepository.existsByUser_IdAndType(user.id, it.itemType)
+                    if (set.contains(it.itemType)) false else {
+                        set.add(it.itemType)
+                        equipmentRepository.existsByUser_IdAndType(user.id, it.itemType)
+                    }
                 )
             }
         )
