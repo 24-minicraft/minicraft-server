@@ -104,7 +104,7 @@ enum class ItemType(
     STICK(
         craft = CraftData(4, ItemStack(PLANKS, 2))
     ),
-    WOOL_TOOL_SET(
+    WOOD_TOOL_SET(
         craft = CraftData(ItemStack(PLANKS, 64), ItemStack(STICK, 8)),
         category = ItemCategory.TOOL
     ),

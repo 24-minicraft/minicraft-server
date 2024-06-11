@@ -27,7 +27,7 @@ class SecurityConfig(
             authorizeHttpRequests {
 
                 authorize(HttpMethod.GET, "/craft", authenticated)
-                authorize(HttpMethod.PATCH, "/craft/{type}", authenticated)
+                authorize(HttpMethod.PUT, "/craft/{type}", authenticated)
 
                 authorize(HttpMethod.GET, "/item/inventory", authenticated)
                 authorize(HttpMethod.GET, "/item/equipment", authenticated)
