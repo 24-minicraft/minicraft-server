@@ -35,8 +35,8 @@ class SecurityConfig(
 
                 authorize(HttpMethod.GET, "/market/materials", authenticated)
                 authorize(HttpMethod.GET, "/market/equipments", authenticated)
-                authorize(HttpMethod.GET, "/market/sell/{type}", authenticated)
-                authorize(HttpMethod.GET, "/market/buy/{type}", authenticated)
+                authorize(HttpMethod.PUT, "/market/sell/{type}", authenticated)
+                authorize(HttpMethod.POST, "/market/buy/{type}", authenticated)
 
                 authorize(HttpMethod.POST, "/users/login", permitAll)
                 authorize(HttpMethod.GET, "/users/seeds", authenticated)
